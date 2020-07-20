@@ -1,0 +1,16 @@
+{
+    "main":{
+        "form":{
+            "labelOrigin": "Type your position",
+            "labelDestination": "Type your destination",
+            "buttonCalculate": "Find route"
+        },
+        "toast":{
+            "networkErrorTitle": "Unreachable Server",
+            "networkErrorDescription": "Verify your connection",
+            "invalidOriginTitle": "Position not found",
+            "invalidDestinationTitle": "Destination not found",
+            "invalidPointDescription": "Make sure you typed correctly"      
+        }
+    }
+}

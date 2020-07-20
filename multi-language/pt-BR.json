@@ -1,0 +1,16 @@
+{
+    "main":{
+        "form":{
+            "labelOrigin": "Digite sua posição",
+            "labelDestination": "Digite seu destino",
+            "buttonCalculate": "Achar rota"
+        },
+        "toast":{
+            "networkErrorTitle": "Servidor Inalcançável",
+            "networkErrorDescription": "Verifique sua conexão",
+            "invalidOriginTitle": "Posição não econtrada",
+            "invalidDestinationTitle": "Destino não encontrado",
+            "invalidPointDescription": "Verifique se digitou corretamente"      
+        }
+    }
+}
