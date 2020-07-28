@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 
 const api = axios.create({
-    baseURL: "http://192.168.0.49:3333"
+	baseURL: 'https://gasur-dev.herokuapp.com/',
 });
 
-export default api;     
+export default api;
