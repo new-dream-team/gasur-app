@@ -13,7 +13,7 @@
     "@react-navigation/stack": "^5.2.10",
     "axios": "^0.19.2",
     "expo": "~37.0.3",
-    "expo-sensors": "^8.1.0",
+    "expo-sensors": "~8.1.0",
     "popup-ui": "^1.0.10",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
@@ -33,12 +33,12 @@
     "babel-preset-expo": "~8.1.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-jsx-a11y": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^4",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4",
     "prettier": "^2.0.5"
   },
   "private": true

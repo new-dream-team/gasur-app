@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import { Accelerometer } from 'expo-sensors';
+import { Pedometer, Magnetometer } from 'expo-sensors';
 
 import walkingIcon from '../assets/walking-icon.svg';
 
@@ -10,42 +10,42 @@ const iconSize = 30;
 const buttonHeight = 20;
 const buttonWitdh = 45;
 
-let passo = 0;
-
 export default class Pirate extends Component {
   constructor(props) {
     super(props);
     this.state = {
       currentY: props.points[0].y,
       currentX: props.points[0].x,
-      oldAccelarationSample: 1.41,
+      cumulativeSteps: 0,
+      direction: 0,
     };
   }
 
   componentDidMount() {
-    // Accelerometer.addListener(this._handleAcceleration.bind(this));
-    // Accelerometer.setUpdateInterval(100);
+    Magnetometer.setUpdateInterval(1000);
+    Magnetometer.addListener(this.handleMagnetometer.bind(this));
+    Pedometer.watchStepCount(this.handleWalking.bind(this));
   }
 
-  _handleAcceleration(accelerationData) {
-    // const aceleracaoXY = Math.sqrt(accelerationData.x^2 + accelerationData.y^2) * 9.81;
-    // const aceleracaoYZ = Math.sqrt(accelerationData.y^2 + accelerationData.z^2 ) * 9.81;
-    const xyzAccelaration = Math.sqrt(
-      accelerationData.y ** 2 +
-        accelerationData.z ** 2 +
-        accelerationData.x ** 2,
-    );
-
-    if (this.state.oldAccelarationSample === 0 && xyzAccelaration === 1) {
-      console.log(`Dei ${++passo} passos`);
+  handleMagnetometer({ x, y }) {
+    // eslint-disable-next-line no-unused-vars
+    let angle;
+    if (Math.atan2(y, x) >= 0) {
+      angle = Math.atan2(y, x) * (180 / Math.PI);
+    } else {
+      angle = (Math.atan2(y, x) + 2 * Math.PI) * (180 / Math.PI);
     }
-    this.setState({
-      oldAccelarationSample: xyzAccelaration,
-    });
+    angle = Math.round(angle);
 
-    console.log(
-      `${new Date().getMinutes()}:${new Date().getSeconds()};${xyzAccelaration}`,
-    );
+    this.setState({ direction });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  handleWalking({ steps }) {
+    const currentSteps = steps - this.state.cumulativeSteps;
+    console.log(currentSteps);
+    console.log(this.state.direction);
+    this.setState({ cumulativeSteps: steps });
   }
 
   _goUp() {
