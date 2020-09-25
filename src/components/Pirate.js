@@ -17,7 +17,7 @@ export default class Pirate extends Component {
       currentY: props.points[0].y,
       currentX: props.points[0].x,
       cumulativeSteps: 0,
-      direction: 0,
+      direction: 'N',
     };
   }
 
@@ -37,6 +37,29 @@ export default class Pirate extends Component {
     }
     angle = Math.round(angle);
 
+    angle = angle - 90 >= 0 ? angle - 90 : angle + 271;
+    // console.log(`angle: ${angle}`);
+    let direction;
+
+    if (angle >= 22.5 && angle < 67.5) {
+      direction = 'NE';
+    } else if (angle >= 67.5 && angle < 112.5) {
+      direction = 'E';
+    } else if (angle >= 112.5 && angle < 157.5) {
+      direction = 'SE';
+    } else if (angle >= 157.5 && angle < 202.5) {
+      direction = 'S';
+    } else if (angle >= 202.5 && angle < 247.5) {
+      direction = 'SW';
+    } else if (angle >= 247.5 && angle < 292.5) {
+      direction = 'W';
+    } else if (angle >= 292.5 && angle < 337.5) {
+      direction = 'NW';
+    } else {
+      direction = 'N';
+    }
+
+    // eslint-disable-next-line no-undef
     this.setState({ direction });
   }
 
@@ -46,22 +69,60 @@ export default class Pirate extends Component {
     console.log(currentSteps);
     console.log(this.state.direction);
     this.setState({ cumulativeSteps: steps });
+
+    if (this.state.direction === 'N') {
+      this._goNorth(currentSteps);
+    } else if (this.state.direction === 'NE') {
+      this._goNortheast(currentSteps);
+    } else if (this.state.direction === 'E') {
+      this._goEast(currentSteps);
+    } else if (this.state.direction === 'SE') {
+      this._goSoutheast(currentSteps);
+    } else if (this.state.direction === 'S') {
+      this._goSouth(currentSteps);
+    } else if (this.state.direction === 'SW') {
+      this._goSouthwest(currentSteps);
+    } else if (this.state.direction === 'W') {
+      this._goWest(currentSteps);
+    } else if (this.state.direction === 'NW') {
+      this._goNorthwest(currentSteps);
+    }
   }
 
-  _goUp() {
-    this.setState({ currentY: this.state.currentY - 20 });
+  _goNorth(stepsTaken) {
+    this.setState({ currentY: this.state.currentY - 10 * stepsTaken });
   }
 
-  _goLeft() {
-    this.setState({ currentX: this.state.currentX - 20 });
+  _goNortheast(stepsTaken) {
+    this.setState({ currentY: this.state.currentY - 5 * stepsTaken });
+    this.setState({ currentX: this.state.currentX - 5 * stepsTaken });
   }
 
-  _goRight() {
-    this.setState({ currentX: this.state.currentX + 20 });
+  _goEast(stepsTaken) {
+    this.setState({ currentX: this.state.currentX - 10 * stepsTaken });
   }
 
-  _goDown() {
-    this.setState({ currentY: this.state.currentY + 20 });
+  _goSoutheast(stepsTaken) {
+    this.setState({ currentX: this.state.currentX - 5 * stepsTaken });
+    this.setState({ currentY: this.state.currentY + 5 * stepsTaken });
+  }
+
+  _goSouth(stepsTaken) {
+    this.setState({ currentY: this.state.currentY + 10 * stepsTaken });
+  }
+
+  _goSouthwest(stepsTaken) {
+    this.setState({ currentY: this.state.currentY + 10 * stepsTaken });
+    this.setState({ currentX: this.state.currentX + 10 * stepsTaken });
+  }
+
+  _goWest(stepsTaken) {
+    this.setState({ currentX: this.state.currentX + 10 * stepsTaken });
+  }
+
+  _goNorthwest(stepsTaken) {
+    this.setState({ currentX: this.state.currentX + 10 * stepsTaken });
+    this.setState({ currentY: this.state.currentY - 10 * stepsTaken });
   }
 
   render() {
