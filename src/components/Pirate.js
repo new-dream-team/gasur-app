@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { Pedometer, Magnetometer } from 'expo-sensors';
 
@@ -9,6 +9,11 @@ import walkingIcon from '../assets/walking-icon.svg';
 const iconSize = 30;
 const buttonHeight = 20;
 const buttonWitdh = 45;
+
+const windowWidth = Dimensions.get('window').width;
+const imgWidth = windowWidth - 20;
+const tamanhoImagem = 1024;
+const imgRatio = imgWidth / tamanhoImagem;
 
 export default class Pirate extends Component {
   constructor(props) {
@@ -90,39 +95,47 @@ export default class Pirate extends Component {
   }
 
   _goNorth(stepsTaken) {
-    this.setState({ currentY: this.state.currentY - 10 * stepsTaken });
+    this.setState({ currentY: this.state.currentY - imgRatio * stepsTaken });
   }
 
   _goNortheast(stepsTaken) {
-    this.setState({ currentY: this.state.currentY - 5 * stepsTaken });
-    this.setState({ currentX: this.state.currentX - 5 * stepsTaken });
+    this.setState({
+      currentY: this.state.currentY - (imgRatio / 2) * stepsTaken,
+      currentX: this.state.currentX - (imgRatio / 2) * stepsTaken,
+    });
   }
 
   _goEast(stepsTaken) {
-    this.setState({ currentX: this.state.currentX - 10 * stepsTaken });
+    this.setState({ currentX: this.state.currentX - imgRatio * stepsTaken });
   }
 
   _goSoutheast(stepsTaken) {
-    this.setState({ currentX: this.state.currentX - 5 * stepsTaken });
-    this.setState({ currentY: this.state.currentY + 5 * stepsTaken });
+    this.setState({
+      currentX: this.state.currentX - (imgRatio / 2) * stepsTaken,
+      currentY: this.state.currentY + (imgRatio / 2) * stepsTaken,
+    });
   }
 
   _goSouth(stepsTaken) {
-    this.setState({ currentY: this.state.currentY + 10 * stepsTaken });
+    this.setState({ currentY: this.state.currentY + imgRatio * stepsTaken });
   }
 
   _goSouthwest(stepsTaken) {
-    this.setState({ currentY: this.state.currentY + 10 * stepsTaken });
-    this.setState({ currentX: this.state.currentX + 10 * stepsTaken });
+    this.setState({
+      currentY: this.state.currentY + (imgRatio / 2) * stepsTaken,
+      currentX: this.state.currentX + (imgRatio / 2) * stepsTaken,
+    });
   }
 
   _goWest(stepsTaken) {
-    this.setState({ currentX: this.state.currentX + 10 * stepsTaken });
+    this.setState({ currentX: this.state.currentX + imgRatio * stepsTaken });
   }
 
   _goNorthwest(stepsTaken) {
-    this.setState({ currentX: this.state.currentX + 10 * stepsTaken });
-    this.setState({ currentY: this.state.currentY - 10 * stepsTaken });
+    this.setState({
+      currentX: this.state.currentX + (imgRatio / 2) * stepsTaken,
+      currentY: this.state.currentY - (imgRatio / 2) * stepsTaken,
+    });
   }
 
   render() {
