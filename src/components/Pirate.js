@@ -10,6 +10,7 @@ const iconSize = 30;
 const buttonHeight = 20;
 const buttonWitdh = 45;
 const imgScale = 10;
+const diagonalImgScale = imgScale * 0.71;
 
 export default class Pirate extends Component {
   constructor(props) {
@@ -100,8 +101,8 @@ export default class Pirate extends Component {
 
   _goNortheast(stepsTaken) {
     this.setState({
-      currentY: this.state.currentY - (imgScale / 2) * stepsTaken,
-      currentX: this.state.currentX - (imgScale / 2) * stepsTaken,
+      currentY: this.state.currentY - diagonalImgScale * stepsTaken,
+      currentX: this.state.currentX - diagonalImgScale * stepsTaken,
     });
   }
 
@@ -113,8 +114,8 @@ export default class Pirate extends Component {
 
   _goSoutheast(stepsTaken) {
     this.setState({
-      currentX: this.state.currentX - (imgScale / 2) * stepsTaken,
-      currentY: this.state.currentY + (imgScale / 2) * stepsTaken,
+      currentX: this.state.currentX - diagonalImgScale * stepsTaken,
+      currentY: this.state.currentY + diagonalImgScale * stepsTaken,
     });
   }
 
@@ -126,8 +127,8 @@ export default class Pirate extends Component {
 
   _goSouthwest(stepsTaken) {
     this.setState({
-      currentY: this.state.currentY + (imgScale / 2) * stepsTaken,
-      currentX: this.state.currentX + (imgScale / 2) * stepsTaken,
+      currentY: this.state.currentY + diagonalImgScale * stepsTaken,
+      currentX: this.state.currentX + diagonalImgScale * stepsTaken,
     });
   }
 
@@ -139,8 +140,8 @@ export default class Pirate extends Component {
 
   _goNorthwest(stepsTaken) {
     this.setState({
-      currentX: this.state.currentX + (imgScale / 2) * stepsTaken,
-      currentY: this.state.currentY - (imgScale / 2) * stepsTaken,
+      currentX: this.state.currentX + diagonalImgScale * stepsTaken,
+      currentY: this.state.currentY - diagonalImgScale * stepsTaken,
     });
   }
 
