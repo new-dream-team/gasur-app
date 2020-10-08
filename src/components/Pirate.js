@@ -1,16 +1,16 @@
 /* eslint-disable no-console */
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
-import { Accelerometer } from 'expo-sensors';
+import { Pedometer, Magnetometer } from 'expo-sensors';
 
 import walkingIcon from '../assets/walking-icon.svg';
 
 const iconSize = 30;
 const buttonHeight = 20;
 const buttonWitdh = 45;
-
-let passo = 0;
+const imgScale = 10;
+const diagonalImgScale = imgScale * 0.71;
 
 export default class Pirate extends Component {
   constructor(props) {
@@ -18,50 +18,131 @@ export default class Pirate extends Component {
     this.state = {
       currentY: props.points[0].y,
       currentX: props.points[0].x,
-      oldAccelarationSample: 1.41,
+      cumulativeSteps: 0,
+      direction: 'N',
     };
   }
 
   componentDidMount() {
-    // Accelerometer.addListener(this._handleAcceleration.bind(this));
-    // Accelerometer.setUpdateInterval(100);
+    Magnetometer.setUpdateInterval(1000);
+    Magnetometer.addListener(this.handleMagnetometer.bind(this));
+    Pedometer.watchStepCount(this.handleWalking.bind(this));
   }
 
-  _handleAcceleration(accelerationData) {
-    // const aceleracaoXY = Math.sqrt(accelerationData.x^2 + accelerationData.y^2) * 9.81;
-    // const aceleracaoYZ = Math.sqrt(accelerationData.y^2 + accelerationData.z^2 ) * 9.81;
-    const xyzAccelaration = Math.sqrt(
-      accelerationData.y ** 2 +
-        accelerationData.z ** 2 +
-        accelerationData.x ** 2,
-    );
-
-    if (this.state.oldAccelarationSample === 0 && xyzAccelaration === 1) {
-      console.log(`Dei ${++passo} passos`);
+  handleMagnetometer({ x, y }) {
+    // eslint-disable-next-line no-unused-vars
+    let angle;
+    if (Math.atan2(y, x) >= 0) {
+      angle = Math.atan2(y, x) * (180 / Math.PI);
+    } else {
+      angle = (Math.atan2(y, x) + 2 * Math.PI) * (180 / Math.PI);
     }
+    angle = Math.round(angle);
+
+    angle = angle - 90 >= 0 ? angle - 90 : angle + 271;
+    // console.log(`angle: ${angle}`);
+    let direction;
+
+    if (angle >= 22.5 && angle < 67.5) {
+      direction = 'NE';
+    } else if (angle >= 67.5 && angle < 112.5) {
+      direction = 'E';
+    } else if (angle >= 112.5 && angle < 157.5) {
+      direction = 'SE';
+    } else if (angle >= 157.5 && angle < 202.5) {
+      direction = 'S';
+    } else if (angle >= 202.5 && angle < 247.5) {
+      direction = 'SW';
+    } else if (angle >= 247.5 && angle < 292.5) {
+      direction = 'W';
+    } else if (angle >= 292.5 && angle < 337.5) {
+      direction = 'NW';
+    } else {
+      direction = 'N';
+    }
+
+    // eslint-disable-next-line no-undef
+    this.setState({ direction });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  handleWalking({ steps }) {
+    const currentSteps = steps - this.state.cumulativeSteps;
+    // console.log(currentSteps);
+    // console.log(this.state.direction);
+    this.setState({ cumulativeSteps: steps });
+
+    if (this.state.direction === 'N') {
+      this._goNorth(currentSteps);
+    } else if (this.state.direction === 'NE') {
+      this._goNortheast(currentSteps);
+    } else if (this.state.direction === 'E') {
+      this._goEast(currentSteps);
+    } else if (this.state.direction === 'SE') {
+      this._goSoutheast(currentSteps);
+    } else if (this.state.direction === 'S') {
+      this._goSouth(currentSteps);
+    } else if (this.state.direction === 'SW') {
+      this._goSouthwest(currentSteps);
+    } else if (this.state.direction === 'W') {
+      this._goWest(currentSteps);
+    } else if (this.state.direction === 'NW') {
+      this._goNorthwest(currentSteps);
+    } else {
+      console.log('Não cai em nenhum lugar');
+    }
+  }
+
+  _goNorth(stepsTaken) {
     this.setState({
-      oldAccelarationSample: xyzAccelaration,
+      currentY: this.state.currentY - imgScale * stepsTaken,
     });
-
-    console.log(
-      `${new Date().getMinutes()}:${new Date().getSeconds()};${xyzAccelaration}`,
-    );
   }
 
-  _goUp() {
-    this.setState({ currentY: this.state.currentY - 20 });
+  _goNortheast(stepsTaken) {
+    this.setState({
+      currentY: this.state.currentY - diagonalImgScale * stepsTaken,
+      currentX: this.state.currentX - diagonalImgScale * stepsTaken,
+    });
   }
 
-  _goLeft() {
-    this.setState({ currentX: this.state.currentX - 20 });
+  _goEast(stepsTaken) {
+    this.setState({
+      currentX: this.state.currentX - imgScale * stepsTaken,
+    });
   }
 
-  _goRight() {
-    this.setState({ currentX: this.state.currentX + 20 });
+  _goSoutheast(stepsTaken) {
+    this.setState({
+      currentX: this.state.currentX - diagonalImgScale * stepsTaken,
+      currentY: this.state.currentY + diagonalImgScale * stepsTaken,
+    });
   }
 
-  _goDown() {
-    this.setState({ currentY: this.state.currentY + 20 });
+  _goSouth(stepsTaken) {
+    this.setState({
+      currentY: this.state.currentY + imgScale * stepsTaken,
+    });
+  }
+
+  _goSouthwest(stepsTaken) {
+    this.setState({
+      currentY: this.state.currentY + diagonalImgScale * stepsTaken,
+      currentX: this.state.currentX + diagonalImgScale * stepsTaken,
+    });
+  }
+
+  _goWest(stepsTaken) {
+    this.setState({
+      currentX: this.state.currentX + imgScale * stepsTaken,
+    });
+  }
+
+  _goNorthwest(stepsTaken) {
+    this.setState({
+      currentX: this.state.currentX + diagonalImgScale * stepsTaken,
+      currentY: this.state.currentY - diagonalImgScale * stepsTaken,
+    });
   }
 
   render() {
