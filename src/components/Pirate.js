@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import { Pedometer, Magnetometer } from 'expo-sensors';
 
@@ -9,11 +9,7 @@ import walkingIcon from '../assets/walking-icon.svg';
 const iconSize = 30;
 const buttonHeight = 20;
 const buttonWitdh = 45;
-
-const windowWidth = Dimensions.get('window').width;
-const imgWidth = windowWidth - 20;
-const tamanhoImagem = 1024;
-const imgRatio = imgWidth / tamanhoImagem;
+const imgScale = 10;
 
 export default class Pirate extends Component {
   constructor(props) {
@@ -71,8 +67,8 @@ export default class Pirate extends Component {
   // eslint-disable-next-line class-methods-use-this
   handleWalking({ steps }) {
     const currentSteps = steps - this.state.cumulativeSteps;
-    console.log(currentSteps);
-    console.log(this.state.direction);
+    // console.log(currentSteps);
+    // console.log(this.state.direction);
     this.setState({ cumulativeSteps: steps });
 
     if (this.state.direction === 'N') {
@@ -91,50 +87,60 @@ export default class Pirate extends Component {
       this._goWest(currentSteps);
     } else if (this.state.direction === 'NW') {
       this._goNorthwest(currentSteps);
+    } else {
+      console.log('Não cai em nenhum lugar');
     }
   }
 
   _goNorth(stepsTaken) {
-    this.setState({ currentY: this.state.currentY - imgRatio * stepsTaken });
+    this.setState({
+      currentY: this.state.currentY - imgScale * stepsTaken,
+    });
   }
 
   _goNortheast(stepsTaken) {
     this.setState({
-      currentY: this.state.currentY - (imgRatio / 2) * stepsTaken,
-      currentX: this.state.currentX - (imgRatio / 2) * stepsTaken,
+      currentY: this.state.currentY - (imgScale / 2) * stepsTaken,
+      currentX: this.state.currentX - (imgScale / 2) * stepsTaken,
     });
   }
 
   _goEast(stepsTaken) {
-    this.setState({ currentX: this.state.currentX - imgRatio * stepsTaken });
+    this.setState({
+      currentX: this.state.currentX - imgScale * stepsTaken,
+    });
   }
 
   _goSoutheast(stepsTaken) {
     this.setState({
-      currentX: this.state.currentX - (imgRatio / 2) * stepsTaken,
-      currentY: this.state.currentY + (imgRatio / 2) * stepsTaken,
+      currentX: this.state.currentX - (imgScale / 2) * stepsTaken,
+      currentY: this.state.currentY + (imgScale / 2) * stepsTaken,
     });
   }
 
   _goSouth(stepsTaken) {
-    this.setState({ currentY: this.state.currentY + imgRatio * stepsTaken });
+    this.setState({
+      currentY: this.state.currentY + imgScale * stepsTaken,
+    });
   }
 
   _goSouthwest(stepsTaken) {
     this.setState({
-      currentY: this.state.currentY + (imgRatio / 2) * stepsTaken,
-      currentX: this.state.currentX + (imgRatio / 2) * stepsTaken,
+      currentY: this.state.currentY + (imgScale / 2) * stepsTaken,
+      currentX: this.state.currentX + (imgScale / 2) * stepsTaken,
     });
   }
 
   _goWest(stepsTaken) {
-    this.setState({ currentX: this.state.currentX + imgRatio * stepsTaken });
+    this.setState({
+      currentX: this.state.currentX + imgScale * stepsTaken,
+    });
   }
 
   _goNorthwest(stepsTaken) {
     this.setState({
-      currentX: this.state.currentX + (imgRatio / 2) * stepsTaken,
-      currentY: this.state.currentY - (imgRatio / 2) * stepsTaken,
+      currentX: this.state.currentX + (imgScale / 2) * stepsTaken,
+      currentY: this.state.currentY - (imgScale / 2) * stepsTaken,
     });
   }
 
