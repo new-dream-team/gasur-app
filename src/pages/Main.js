@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
+
 } from 'react-native';
 import { Toast, Root } from 'popup-ui';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -22,11 +23,13 @@ const windowWidth = Dimensions.get('screen').width;
 export default function Main({ navigation }) {
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
+  const [idMap, setIdMap]= useState('');
   const [language, setLanguage] = useState(multiLanguage);
+  const maps=[];
 
   async function handleSubmit() {
     try {
-      const response = await api.post('/generateMap', { origin, destination });
+      const response = await api.post('/generateMap', { origin, destination, idMap });
       navigation.navigate('Navigator', { points: response.data });
     } catch (error) {
       if (error.message === 'Network Error') {
@@ -73,7 +76,19 @@ export default function Main({ navigation }) {
     }
   }
 
+  async function getMap(){
+    await api.get('/image-all').then(res => {
+    
+      for(const map of res.data){
+        maps.push({ label:map.name , value:map._id })
+      }
+    }).catch(error => {
+        console.log(error);
+    });
+  }
+
   return (
+    getMap(),
     <Root>
       <Dropdown
         dropdownPosition={0}
@@ -85,7 +100,15 @@ export default function Main({ navigation }) {
       />
       <View style={styles.container}>
         <Image source={logo} />
-
+        <Dropdown
+          dropdownPosition={0}
+          value={idMap}
+          containerStyle={styles.mapsDropdown}
+          onChangeText={value => {setIdMap(value)}}
+          data={maps}
+          fontSize={12}
+        />
+        
         <View style={styles.form}>
           <Text style={styles.label}> {language.main.form.labelOrigin} </Text>
           <TextInput
@@ -161,4 +184,7 @@ const styles = StyleSheet.create({
     width: 60,
     marginLeft: windowWidth - 65,
   },
+  mapsDropdown: {
+    width: '80%',
+  }
 });
