@@ -9,7 +9,10 @@ export default class Navigator extends Component {
     return (
       <View style={styles.container}>
         <Image source={logo} style={styles.logo} />
-        <Map points={this.props.route.params.points} />
+        <Map
+          points={this.props.route.params.points}
+          mapUrl={this.props.route.params.mapUrl}
+        />
       </View>
     );
   }
