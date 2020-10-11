@@ -6,7 +6,6 @@ import SvgUri from 'react-native-svg-uri';
 
 import Pirate from './Pirate';
 
-import map from '../assets/map.png';
 import finishIcon from '../assets/finish-icon.svg';
 
 const windowWidth = Dimensions.get('window').width;
@@ -17,7 +16,11 @@ const imgRatio = imgWidth / tamanhoImagem;
 const finishIconSize = 25;
 
 export default class Map extends Component {
+  constructor(props){
+    super(props)
+  }
   render() {
+    
     return (
       <View>
         <ImageZoom
@@ -27,7 +30,7 @@ export default class Map extends Component {
           imageHeight={windowHeight}
           minScale={1.0}
         >
-          <ImageBackground style={styles.map} source={map} resizeMode="contain">
+          <ImageBackground style={styles.map} source={ {uri: this.props.mapUrl }} resizeMode="contain">
             <Svg width={imgWidth} height={windowHeight} position="absolute">
               {this.props.points.map((point, key) => {
                 if (key !== 0) {

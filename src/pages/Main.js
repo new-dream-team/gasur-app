@@ -29,8 +29,9 @@ export default function Main({ navigation }) {
 
   async function handleSubmit() {
     try {
-      const response = await api.post('/generateMap', { origin, destination, idMap });
-      navigation.navigate('Navigator', { points: response.data });
+      const response = await api.post('/generateMap', { origin, destination });
+      const res = await api.get(`/image`, {params:{id:idMap}})
+      navigation.navigate('Navigator', { points: response.data , mapUrl: res.data[0].urlImage});
     } catch (error) {
       if (error.message === 'Network Error') {
         return Toast.show({
@@ -102,7 +103,7 @@ export default function Main({ navigation }) {
         <Image source={logo} />
         <Dropdown
           dropdownPosition={0}
-          value={idMap}
+          value=''
           containerStyle={styles.mapsDropdown}
           onChangeText={value => {setIdMap(value)}}
           data={maps}
