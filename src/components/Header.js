@@ -15,10 +15,10 @@ export default class Header extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#075757',
+    height: 60,
   },
   logo: {
     resizeMode: 'center',
