@@ -37,6 +37,8 @@ export default class Map extends Component {
                   const lastPoint = this.props.points[key - 1];
                   return (
                     <Line
+                      // eslint-disable-next-line react/no-array-index-key
+                      key={key}
                       x1={lastPoint.x * imgRatio}
                       y1={lastPoint.y * imgRatio}
                       x2={point.x * imgRatio}

@@ -19,17 +19,18 @@ const multiLanguage = require('../../multi-language/en-US.json');
 const availableLanguages = [{ value: 'pt-BR' }, { value: 'en-US' }];
 const windowWidth = Dimensions.get('screen').width;
 
-export default function Main({ navigation }) {
+export default function Main({ navigation, route }) {
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
-  const [idMap, setIdMap] = useState('');
   const [language, setLanguage] = useState(multiLanguage);
-  const maps = [];
 
   async function handleSubmit() {
     try {
       const response = await api.post('/generateMap', { origin, destination });
-      const res = await api.get(`/image`, { params: { id: idMap } });
+      const res = await api.get(`/image`, {
+        params: { id: route.params.idMap },
+      });
+
       navigation.navigate('Navigator', {
         points: response.data,
         mapUrl: res.data[0].urlImage,
@@ -79,75 +80,49 @@ export default function Main({ navigation }) {
     }
   }
 
-  async function getMap() {
-    await api
-      .get('/image-all')
-      .then(res => {
-        for (const map of res.data) {
-          maps.push({ label: map.name, value: map._id });
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
   return (
-    getMap(),
-    (
-      <Root>
-        <Dropdown
-          dropdownPosition={0}
-          value="en-US"
-          containerStyle={styles.dropdown}
-          onChangeText={value => changeLanguage(value)}
-          data={availableLanguages}
-          fontSize={12}
-        />
-        <View style={styles.container}>
-          <Image source={logo} />
-          <Dropdown
-            dropdownPosition={0}
-            value=""
-            containerStyle={styles.mapsDropdown}
-            onChangeText={value => {
-              setIdMap(value);
-            }}
-            data={maps}
-            fontSize={12}
-          />
+    <Root>
+      <Dropdown
+        dropdownPosition={0}
+        value="en-US"
+        containerStyle={styles.dropdown}
+        onChangeText={value => changeLanguage(value)}
+        data={availableLanguages}
+        fontSize={12}
+      />
+      <View style={styles.container}>
+        <Image source={logo} />
 
-          <View style={styles.form}>
-            <Text style={styles.label}> {language.main.form.labelOrigin} </Text>
-            <TextInput
-              style={styles.input}
-              placeholder="T01"
-              placeholderTextColor="#999"
-              autoCorrect={false}
-              value={origin}
-              onChangeText={setOrigin}
-            />
-            <Text style={styles.label}>
-              {' '}
-              {language.main.form.labelDestination}
+        <View style={styles.form}>
+          <Text style={styles.label}> {language.main.form.labelOrigin} </Text>
+          <TextInput
+            style={styles.input}
+            placeholder="T01"
+            placeholderTextColor="#999"
+            autoCorrect={false}
+            value={origin}
+            onChangeText={setOrigin}
+          />
+          <Text style={styles.label}>
+            {' '}
+            {language.main.form.labelDestination}
+          </Text>
+          <TextInput
+            style={styles.input}
+            placeholder="T09"
+            placeholderTextColor="#999"
+            autoCorrect={false}
+            value={destination}
+            onChangeText={setDestination}
+          />
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>
+              {language.main.form.buttonCalculate}
             </Text>
-            <TextInput
-              style={styles.input}
-              placeholder="T09"
-              placeholderTextColor="#999"
-              autoCorrect={false}
-              value={destination}
-              onChangeText={setDestination}
-            />
-            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-              <Text style={styles.buttonText}>
-                {language.main.form.buttonCalculate}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
         </View>
-      </Root>
-    )
+      </View>
+    </Root>
   );
 }
 

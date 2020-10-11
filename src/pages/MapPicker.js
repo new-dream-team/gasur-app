@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { Component } from 'react';
 import {
   SafeAreaView,
@@ -42,7 +43,11 @@ export default class MapPicker extends Component {
                 <TouchableOpacity
                   style={styles.cardButton}
                   activeOpacity={0.8}
-                  onPress={() => console.log(`Sou o ${mapCard.name}`)}
+                  onPress={() => {
+                    this.props.navigation.navigate('Main', {
+                      idMap: mapCard._id,
+                    });
+                  }}
                 >
                   <ImageBackground
                     source={{ uri: mapCard.urlImage }}
