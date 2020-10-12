@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { View, ImageBackground, StyleSheet, Dimensions } from 'react-native';
+import {
+  View,
+  ImageBackground,
+  StyleSheet,
+  Dimensions,
+  Image,
+} from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
 import { Svg, Line } from 'react-native-svg';
 import SvgUri from 'react-native-svg-uri';
@@ -16,6 +22,13 @@ const imgRatio = imgWidth / tamanhoImagem;
 const finishIconSize = 25;
 
 export default class Map extends Component {
+  componentDidMount() {
+    Image.getSize(this.props.mapUrl, (Width, Height) => {
+      console.log(`width: ${Width}`);
+      console.log(`height: ${Height}`);
+    });
+  }
+
   render() {
     return (
       <View>
