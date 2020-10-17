@@ -26,14 +26,18 @@ export default function Main({ navigation, route }) {
 
   async function handleSubmit() {
     try {
-      const response = await api.post('/generateMap', { origin, destination });
+      const response = await api.post(
+        '/generateMap',
+        { origin, destination },
+        { params: { id: route.params.idMap } },
+      );
       const res = await api.get(`/image`, {
         params: { id: route.params.idMap },
       });
 
       navigation.navigate('Navigator', {
         points: response.data,
-        mapUrl: res.data[0].urlImage,
+        mapUrl: res.data.urlImage,
       });
     } catch (error) {
       if (error.message === 'Network Error') {
