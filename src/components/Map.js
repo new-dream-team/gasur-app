@@ -17,15 +17,23 @@ import finishIcon from '../assets/finish-icon.svg';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const imgWidth = windowWidth - 20;
-const tamanhoImagem = 1024;
-const imgRatio = imgWidth / tamanhoImagem;
 const finishIconSize = 25;
 
 export default class Map extends Component {
-  componentDidMount() {
-    Image.getSize(this.props.mapUrl, (Width, Height) => {
-      console.log(`width: ${Width}`);
-      console.log(`height: ${Height}`);
+  constructor(props) {
+    super(props);
+    this.state = {
+      xRatio: null,
+      yRatio: null,
+    };
+  }
+
+  async componentDidMount() {
+    await Image.getSize(this.props.mapUrl, (width, height) => {
+      this.setState({
+        xRatio: imgWidth / width,
+        yRatio: imgWidth / height,
+      });
     });
   }
 
@@ -52,10 +60,10 @@ export default class Map extends Component {
                     <Line
                       // eslint-disable-next-line react/no-array-index-key
                       key={key}
-                      x1={lastPoint.x * imgRatio}
-                      y1={lastPoint.y * imgRatio}
-                      x2={point.x * imgRatio}
-                      y2={point.y * imgRatio}
+                      x1={lastPoint.x * this.state.xRatio}
+                      y1={lastPoint.y * this.state.yRatio}
+                      x2={point.x * this.state.xRatio}
+                      y2={point.y * this.state.yRatio}
                       stroke="blue"
                       strokeWidth="2"
                     />
@@ -66,11 +74,13 @@ export default class Map extends Component {
             <View
               style={styles.iconView}
               top={
-                this.props.points[this.props.points.length - 1].y * imgRatio -
+                this.props.points[this.props.points.length - 1].y *
+                  this.state.yRatio -
                 finishIconSize
               }
               left={
-                this.props.points[this.props.points.length - 1].x * imgRatio
+                this.props.points[this.props.points.length - 1].x *
+                this.state.xRatio
               }
             >
               <SvgUri
@@ -80,7 +90,11 @@ export default class Map extends Component {
                 fill="#00FFCC"
               />
             </View>
-            <Pirate points={this.props.points} imgRatio={imgRatio} />
+            <Pirate
+              points={this.props.points}
+              xRatio={this.state.xRatio}
+              yRatio={this.state.yRatio}
+            />
           </ImageBackground>
         </ImageZoom>
       </View>
