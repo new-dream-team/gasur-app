@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import Header from '../components/Header';
+import SplashScreen from './SplashScreen';
 import api from '../services/api';
 
 export default class MapPicker extends Component {
@@ -17,6 +18,7 @@ export default class MapPicker extends Component {
     super(props);
     this.state = {
       maps: [],
+      isLoading: true,
     };
   }
 
@@ -24,10 +26,14 @@ export default class MapPicker extends Component {
     const response = await api.get('/image-all');
     this.setState({
       maps: response.data,
+      isLoading: false,
     });
   }
 
   render() {
+    if (this.state.isLoading) {
+      return <SplashScreen />;
+    }
     return (
       <SafeAreaView style={styles.container}>
         <SafeAreaView style={styles.header}>
