@@ -150,8 +150,12 @@ export default class Pirate extends Component {
       <View style={styles.container}>
         <View
           style={styles.svgContainer}
-          top={this.state.currentY * this.props.imgRatio - iconSize}
-          left={this.state.currentX * this.props.imgRatio - iconSize / 2}
+          top={
+            this.state.currentY * this.props.yRatio -
+            iconSize +
+            +this.props.yOffset
+          }
+          left={this.state.currentX * this.props.xRatio - iconSize / 2}
         >
           <SvgUri
             width={iconSize}
