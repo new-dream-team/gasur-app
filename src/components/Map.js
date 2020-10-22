@@ -25,6 +25,7 @@ export default class Map extends Component {
     this.state = {
       xRatio: null,
       yRatio: null,
+      yOffset: null,
     };
   }
 
@@ -32,7 +33,8 @@ export default class Map extends Component {
     await Image.getSize(this.props.mapUrl, (width, height) => {
       this.setState({
         xRatio: imgWidth / width,
-        yRatio: imgWidth / height,
+        yRatio: imgWidth / width,
+        yOffset: (imgWidth - (height * imgWidth) / width) / 2,
       });
     });
   }
@@ -61,9 +63,9 @@ export default class Map extends Component {
                       // eslint-disable-next-line react/no-array-index-key
                       key={key}
                       x1={lastPoint.x * this.state.xRatio}
-                      y1={lastPoint.y * this.state.yRatio}
+                      y1={lastPoint.y * this.state.yRatio + this.state.yOffset}
                       x2={point.x * this.state.xRatio}
-                      y2={point.y * this.state.yRatio}
+                      y2={point.y * this.state.yRatio + this.state.yOffset}
                       stroke="blue"
                       strokeWidth="2"
                     />
@@ -76,7 +78,8 @@ export default class Map extends Component {
               top={
                 this.props.points[this.props.points.length - 1].y *
                   this.state.yRatio -
-                finishIconSize
+                finishIconSize +
+                this.state.yOffset
               }
               left={
                 this.props.points[this.props.points.length - 1].x *
@@ -94,6 +97,7 @@ export default class Map extends Component {
               points={this.props.points}
               xRatio={this.state.xRatio}
               yRatio={this.state.yRatio}
+              yOffset={this.state.yOffset}
             />
           </ImageBackground>
         </ImageZoom>
