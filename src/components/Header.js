@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 
-import logo from '../assets/logo.png';
+import logo from '../assets/logo-header.png';
 
 export default class Header extends Component {
   render() {
