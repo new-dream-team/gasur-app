@@ -11,8 +11,8 @@
             "invalidOriginTitle": "Posição não econtrada",
             "invalidDestinationTitle": "Destino não encontrado",
             "invalidPointDescription": "Verifique se digitou corretamente",
-            "originCannotBeEqualDestinationTitle": "Dados invalidos",
-            "originCannotBeEqualDestination": "Origem nao pode ser igual ao destino"
+            "originCannotBeEqualDestinationTitle": "Dados inválidos",
+            "originCannotBeEqualDestination": "Origem não pode ser igual ao destino"
         }
     }
 }

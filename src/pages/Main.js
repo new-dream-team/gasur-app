@@ -26,7 +26,7 @@ export default function Main({ navigation, route }) {
 
   async function handleSubmit() {
     try {
-      if(origin !== destination){
+      if (origin !== destination) {
         const response = await api.post(
           '/generateMap',
           { origin, destination },
@@ -35,12 +35,12 @@ export default function Main({ navigation, route }) {
         const res = await api.get(`/image`, {
           params: { id: route.params.idMap },
         });
-  
+
         navigation.navigate('Navigator', {
           points: response.data,
           mapUrl: res.data.urlImage,
         });
-      }else {
+      } else {
         return Toast.show({
           title: language.main.toast.originCannotBeEqualDestinationTitle,
           text: language.main.toast.originCannotBeEqualDestination,
