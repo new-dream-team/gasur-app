@@ -26,19 +26,35 @@ export default function Main({ navigation, route }) {
 
   async function handleSubmit() {
     try {
-      const response = await api.post(
-        '/generateMap',
-        { origin, destination },
-        { params: { id: route.params.idMap } },
-      );
-      const res = await api.get(`/image`, {
-        params: { id: route.params.idMap },
-      });
+      if (origin !== destination) {
+        const response = await api.post(
+          '/generateMap',
+          { origin, destination },
+          { params: { id: route.params.idMap } },
+        );
+        const res = await api.get(`/image`, {
+          params: { id: route.params.idMap },
+        });
 
-      navigation.navigate('Navigator', {
-        points: response.data,
-        mapUrl: res.data.urlImage,
-      });
+        navigation.navigate('Navigator', {
+          points: response.data,
+          mapUrl: res.data.urlImage,
+        });
+      } else {
+        return Toast.show({
+          title: language.main.toast.originCannotBeEqualDestinationTitle,
+          text: language.main.toast.originCannotBeEqualDestination,
+          color: '#F29091',
+          timing: 2000,
+          icon: (
+            <Image
+              source={require('../assets/Error.png')}
+              style={{ width: 80, height: 80 }}
+              resizeMode="contain"
+            />
+          ),
+        });
+      }
     } catch (error) {
       if (error.message === 'Network Error') {
         return Toast.show({

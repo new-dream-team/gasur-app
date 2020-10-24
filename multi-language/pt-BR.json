@@ -10,7 +10,9 @@
             "networkErrorDescription": "Verifique sua conexão",
             "invalidOriginTitle": "Posição não econtrada",
             "invalidDestinationTitle": "Destino não encontrado",
-            "invalidPointDescription": "Verifique se digitou corretamente"
+            "invalidPointDescription": "Verifique se digitou corretamente",
+            "originCannotBeEqualDestinationTitle": "Dados inválidos",
+            "originCannotBeEqualDestination": "Origem não pode ser igual ao destino"
         }
     }
 }

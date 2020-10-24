@@ -10,7 +10,9 @@
             "networkErrorDescription": "Verify your connection",
             "invalidOriginTitle": "Position not found",
             "invalidDestinationTitle": "Destination not found",
-            "invalidPointDescription": "Make sure you typed correctly"      
+            "invalidPointDescription": "Make sure you typed correctly",
+            "originCannotBeEqualDestinationTitle": "Invalid data",
+            "originCannotBeEqualDestination": "Origin cannot be equal to destination"  
         }
     }
 }
