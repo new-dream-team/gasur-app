@@ -72,7 +72,8 @@ export default function Main({ navigation, route }) {
         });
       }
       let msg;
-      if (error.response.request._response === 'Origin not found') {
+      const response = JSON.parse(error.response.request._response);
+      if (response.error === 'Origin not found') {
         msg = language.main.toast.invalidOriginTitle;
       } else {
         msg = language.main.toast.invalidDestinationTitle;
